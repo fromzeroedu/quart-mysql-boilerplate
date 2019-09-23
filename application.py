@@ -21,12 +21,12 @@ def create_app(**config_overrides):
 
     @app.before_serving
     async def create_db_conn():
-        print("starting app")
+        print("Starting app")
         app.sac = await sa_connection()
 
     @app.after_serving
     async def close_db_conn():
-        print("closing down app")
+        print("Closing down app")
         await app.sac.close()
 
     return app

@@ -8,7 +8,6 @@ from sqlalchemy import create_engine
 load_dotenv(".quartenv")
 
 from application import create_app
-from counter.models import metadata as CounterMetadata
 
 # We need our own module-level event_loop
 # since pytest's is a function-level fixture
@@ -61,20 +60,14 @@ async def create_db(event_loop):
     conn.close()
 
 
-@pytest.fixture(scope="module")
-def create_all(create_db):
-    print("Creating Models")
-    engine = create_engine(create_db["DB_URI"] + "/" + create_db["DATABASE_NAME"])
-    CounterMetadata.bind = engine
-    CounterMetadata.create_all()
-
-
+@pytest.mark.asyncio
 @pytest.fixture(scope="module")
 async def create_test_app(create_db):
     app = create_app(**create_db)
+    print("Starting test app")
     await app.startup()
     yield app
-    print("closing")
+    print("Closing test app")
     await app.shutdown()
 
 
