@@ -11,8 +11,8 @@ from application import create_app
 
 # We need our own module-level event_loop
 # since pytest's is a function-level fixture
-@pytest.fixture(scope="module")
-def event_loop():
+@pytest.yield_fixture(scope="module")
+def event_loop(request):
     loop = asyncio.get_event_loop()
     yield loop
     loop.close()
@@ -60,14 +60,11 @@ async def create_db(event_loop):
     conn.close()
 
 
-@pytest.mark.asyncio
 @pytest.fixture(scope="module")
 async def create_test_app(create_db):
     app = create_app(**create_db)
-    print("Starting test app")
     await app.startup()
     yield app
-    print("Closing test app")
     await app.shutdown()
 
 
