@@ -8,6 +8,7 @@ from counter.models import counter_table, metadata as CounterMetadata
 # to inherit from the model-level connection
 @pytest.fixture(scope="module")
 def create_counter_tables(create_db):
+    print("Creating Counter Tables")
     engine = create_engine(create_db["DB_URI"] + "/" + create_db["DATABASE_NAME"])
     CounterMetadata.bind = engine
     CounterMetadata.create_all()
