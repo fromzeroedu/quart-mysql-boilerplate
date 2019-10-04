@@ -9,6 +9,14 @@ load_dotenv(".quartenv")
 
 from application import create_app
 
+# We need our own module-level event_loop
+# since pytest's is a function-level fixture
+@pytest.yield_fixture(scope="module")
+def event_loop(request):
+    loop = asyncio.get_event_loop()
+    yield loop
+    loop.close()
+
 
 @pytest.mark.asyncio
 @pytest.fixture(scope="module")
