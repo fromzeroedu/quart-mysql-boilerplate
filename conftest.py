@@ -20,7 +20,7 @@ def event_loop(request):
 
 @pytest.mark.asyncio
 @pytest.fixture(scope="module")
-async def create_db(event_loop):
+async def create_db():
     print("Creating db")
     db_name = os.environ["DATABASE_NAME"] + "_test"
     db_host = os.environ["DB_HOST"]
