@@ -1,5 +1,4 @@
 from quart import Quart
-from aiomysql.sa import create_engine
 
 from db import sa_connection
 
